@@ -2,40 +2,16 @@
 
 ## Architecture Diagram
 
-```text
-+------------------------------------------------------+
-| PRESENTATION TIER                                    |
-|------------------------------------------------------|
-| Student-facing reservation interface                 |
-| - Collect date/time/room criteria                    |
-| - Display available rooms                            |
-| - Show immediate input feedback                      |
-| - Display confirmation/errors                        |
-+-----------------------------|------------------------+
-                              |
-                              v
-+------------------------------------------------------+
-| APPLICATION LOGIC TIER                               |
-|------------------------------------------------------|
-| Reservation service / business logic                 |
-| - Critical validation                                |
-| - Availability and overlap rules                     |
-| - State-transition enforcement                       |
-| - Generate transaction ID                            |
-| - Calculate duration                                 |
-| - Coordinate persistence                             |
-+-----------------------------|------------------------+
-                              |
-                              v
-+------------------------------------------------------+
-| DATA TIER                                            |
-|------------------------------------------------------|
-| Reservation database                                 |
-| - Persist official reservation records               |
-| - Store room/reference data                          |
-| - Preserve status and timestamps                     |
-| - Preserve audit/history information                 |
-+------------------------------------------------------+
+```mermaid
+flowchart TB
+    P["PRESENTATION TIER<br/>Student reservation interface<br/>Collect input<br/>Immediate feedback<br/>Display options and responses"]
+    A["APPLICATION LOGIC TIER<br/>Reservation service<br/>Critical validation<br/>Availability / overlap rules<br/>State transitions<br/>Generate transaction ID<br/>Derived values"]
+    D["DATA TIER<br/>Reservation database<br/>Persist official records<br/>Store room/reference data<br/>Preserve status, timestamps, and audit history"]
+
+    P -->|Reservation request| A
+    A -->|Read / write official data| D
+    D -->|Stored records / availability facts| A
+    A -->|Validated result / response| P
 ```
 
 ## Major Responsibilities
