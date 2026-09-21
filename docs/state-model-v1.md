@@ -11,6 +11,20 @@
 | Expired | A temporary selection was not confirmed within the allowed period. |
 | Completed | The reserved time has passed and the reservation is retained as historical record. |
 
+## State Transition Diagram
+
+```mermaid
+flowchart LR
+    D[Draft] -->|Valid room/time selected| S[Selected]
+    D -->|Student exits/cancels| C[Cancelled]
+    S -->|Confirm + final validation passes| F[Confirmed]
+    S -->|Student cancels| C
+    S -->|Selection timer expires| E[Expired]
+    S -->|Final validation fails| D
+    F -->|Allowed cancellation| C
+    F -->|Reservation time passes| X[Completed]
+```
+
 ## Allowed State Transitions
 
 | Current State | Trigger | Who / What | Next State | Condition / Note |
@@ -23,19 +37,5 @@
 | Selected | Final validation fails | Application | Draft | Student must revise selection/request. |
 | Confirmed | Student cancels before allowed cutoff | Student + application | Cancelled | Cancellation rule is satisfied. |
 | Confirmed | Reservation time passes | System | Completed | Reservation is retained for history/audit. |
-
-## State Flow
-
-```text
-Draft
-  ├── valid selection ──> Selected
-  │                       ├── confirmation + valid rules ──> Confirmed
-  │                       │                                  ├── cancellation ──> Cancelled
-  │                       │                                  └── time passes ──> Completed
-  │                       ├── student cancels ─────────────> Cancelled
-  │                       ├── timer expires ───────────────> Expired
-  │                       └── validation fails ────────────> Draft
-  └── student cancels ────────────────────────────────────> Cancelled
-```
 
 These state names describe persistent transaction conditions rather than workflow actions.
