@@ -38,6 +38,7 @@ Responsible for the official persistent record:
 - Store reservation records
 - Store room/reference data
 - Preserve status
+- Preserve rejection reasons
 - Preserve timestamps
 - Preserve audit/history data
 

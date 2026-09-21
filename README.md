@@ -47,9 +47,10 @@ The Week 3 design files are in the `docs` folder:
 ## Project Assumptions
 The Week 3 activity defines the design requirements but does not specify detailed business rules for this project. The following are team design assumptions:
 
-1. A student must be authenticated before confirming a reservation.
+1. Campus-login integration is outside the project scope; the reservation workflow assumes an authorized student identifier is already available when the transaction begins.
 2. A room cannot be double-booked for an overlapping time slot.
-3. A reservation may be cancelled before its scheduled start time.
-4. A temporary room/time selection can expire if confirmation is not completed.
-5. Application logic is authoritative for critical validation, business rules, and state transitions.
-6. The data tier preserves the official transaction and audit record.
+3. A reservation request becomes an official transaction when submitted, at which point it receives a stable reservation ID and `Submitted` status.
+4. A submitted request becomes either `Confirmed` or `Rejected`; every rejected request preserves a rejection reason.
+5. A confirmed reservation may be cancelled before its scheduled start time.
+6. Application logic is authoritative for critical validation, business rules, and state transitions.
+7. The data tier preserves the official transaction, status, rejection reason, timestamps, and audit record.
